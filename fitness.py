@@ -40,6 +40,12 @@ class Fitness(object):
     def has_fitness(self, population = []):
         return False
 
+    def get_current_experiment(self):
+        return {
+            "experiment_id":"fPnYQqFiQOuv9ziF2Meziw",
+            "variations" : ["0-0-0","0-0-1"]
+        }
+
 # tests
 if __name__ == "__main__":
     f = get_fitness('example')

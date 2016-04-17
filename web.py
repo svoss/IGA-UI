@@ -1,7 +1,9 @@
 from flask import Flask
 from flask import Response
-from model import models,assemble_js_for_code
+from model import models,assemble_js_for_code,project_setting
 from flask import request
+from fitness import get_fitness
+import json
 app = Flask(__name__)
 
 # print a nice greeting.
@@ -11,7 +13,7 @@ def index():
 
 
 def example():
-    code = request.args.get('code', '1-1')
+    code = request.args.get('code', '0-0-0')
 
     return '<html>'\
        '<head>'\
@@ -27,7 +29,6 @@ def example():
        '    </table>'\
        '<p id="colored-text">I want this to be a color</p>'\
        'It will influence the javascript file included here'\
-       '    <script type="text/javascript" src="/example/'+code+'.js"></script>'\
        '<script>'\
        '  (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){'\
        '  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),'\
@@ -36,7 +37,8 @@ def example():
        ''\
        '  ga(\'create\', \'UA-76516435-2\', \'auto\');'\
        '  ga(\'send\', \'pageview\');'\
-       '</script>'\
+       '</script>' \
+       '<script src="/example/experiment.js"></script>' \
        '</body>'\
     '</html>'
 
@@ -47,6 +49,15 @@ def individual(project, individual):
         mimetype="application/javascript"
     )
 
+
+def experiment(project):
+    f = get_fitness(project)
+    e = f.get_current_experiment()
+    vars = json.dumps(e['variations']).replace('"', '\\"')
+    prefix = project_setting(project, 'prefix')
+    return 'document.write("<sc"+"ript src=\'http" + (document.location.protocol == \'https:\' ? \'s://ssl\' : \'://www\') + ".google-analytics.com/cx/api.js?experiment='+e['experiment_id']+'\'><\\/script>");'\
+        'document.write("<script>var chosenVariation = cxApi.chooseVariation(); var variations ='+vars+'; var code = variations[chosenVariation]; ' \
+        'document.write(\\"<sc\\"+\\"ript src=\''+prefix+'code-\\"+code+\\".js\'></scri\\"+\\"pt>\\");</scri"+"pt>");'
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
 
@@ -55,7 +66,9 @@ application.add_url_rule('/', 'index', example)
 application.add_url_rule('/example.html', 'example', example)
 # add a rule when the page is accessed with a name appended to the site
 # URL.
-application.add_url_rule('/<project>/<individual>.js', 'hello', individual)
+application.add_url_rule('/<project>/experiment.js', 'experiment', experiment)
+application.add_url_rule('/<project>/code-<individual>.js', 'hello', individual)
+
 
 # run the app.
 if __name__ == "__main__":

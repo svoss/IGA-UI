@@ -1,3 +1,4 @@
+import pytz
 example = {
     'banner' : {
         'hide' : "document.getElementById(\"banner\").style.display='none';",
@@ -23,12 +24,18 @@ settings = {
     'example': {
         'start_code': "0-0-0",
         'evaluation_time_per_individual': .5 ,# time need per individual to determine fitness in days
-        'population_size': 2
+        'population_size': 2,
+        'ga_account': '76516435',
+        'ga_property': 'UA-76516435-2',
+        'ga_profile': '120409781',
+        'time_zone' : pytz.timezone('Europe/Amsterdam'),
+        'prefix': '/example/'
     },
     'FV': {
         'start_code': "0-0-0",
         'evaluation_time_per_individual': .2,# time need per individual to determine fitness in days
-        'population_size': 5
+        'population_size': 5,
+        'time_zone' : pytz.timezone('Europe/Amsterdam')
     }
 }
 
