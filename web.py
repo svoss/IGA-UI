@@ -15,14 +15,17 @@ def example():
 
     return '<html>'\
        '<head>'\
-       '    <title>Test it</title>'\
+       '    <title>This is test for iga.stijnvoss.com</title>'\
        '</head>'\
        '<body>'\
+       '<p>This is demo service used for a project at the Radboud University. You can contact us via ' \
+           '<a href="mailto:stijn.voss@student.ru.nl">stijn.voss@student.ru.nl</a></p>'\
        '<p> You can make the banner and table disappear by change the 1\s in the code in the query parameters to 0\'s'\
        '    <div id="banner"><b>Banner</b> 1234</div>'\
        '    <table id="table">'\
        '        <tr><td><strong>Table</strong>-</td><td>Bar</td></tr>'\
        '    </table>'\
+       '<p id="colored-text">I want this to be a color</p>'\
        'It will influence the javascript file included here'\
        '    <script type="text/javascript" src="/example/'+code+'.js"></script>'\
        '</body>'\
@@ -39,7 +42,7 @@ def individual(project, individual):
 application = Flask(__name__)
 
 # add a rule for the index page.
-application.add_url_rule('/', 'index', index)
+application.add_url_rule('/', 'index', example)
 application.add_url_rule('/example.html', 'example', example)
 # add a rule when the page is accessed with a name appended to the site
 # URL.
