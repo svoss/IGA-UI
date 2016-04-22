@@ -34,10 +34,10 @@ def start_experiments(project, variations):
     """
     service = _get_service(project)
     start_code = project_setting(project, 'start_code')
-    base_url = project_setting(project,'example_url')
+    base_url = project_setting(project, 'example_url')
     body = {
         'name': 'IGA - ' + datetime.now(project_setting(project, 'time_zone')).strftime('%Y-%m-%d %H:%M:%S'),
-        'variations': [{'name': v, 'url':(base_url if start_code == v else '?iga-code='+v)} for v in variations],
+        'variations': [{'name': v, 'url': (base_url if start_code == v else '?iga-code=' + v)} for v in variations],
         'servingFramework': 'API',
         'objectiveMetric': 'ga:bounces',
         'status': 'RUNNING'
@@ -62,7 +62,7 @@ def get_experiment_score(project, experiment_id, metrics='ga:bounceRate, ga:sess
              the experiment.
     """
     data = _get_experiment_data(project, experiment_id, metrics=metrics, start_date='2016-01-01',
-                               end_date='today')
+                                end_date='today')
     metric_names = [metric.strip() for metric in metrics.split(',')]
     matrix = [data['data'][metric_name] for metric_name in metric_names]
     return np.matrix(matrix)
@@ -88,7 +88,7 @@ def get_experiment(project, experiment_id):
 
 
 def _get_experiment_data(project, experiment_id, metrics='ga:sessions, ga:bounceRate', start_date='30daysAgo',
-                        end_date='today'):
+                         end_date='today'):
     """
     Get data for an experiment.
 
@@ -117,12 +117,13 @@ def _get_experiment_data(project, experiment_id, metrics='ga:sessions, ga:bounce
     column_names = ['index'] + [metric.strip() for metric in metrics.split(',')]
     for column in column_names:
         data[column] = []
-    for row in s['rows']:
-        for index in range(len(row)):
-            value = row[index]
-            value = int(value) if index == 0 else float(value)
-            column = column_names[index]
-            data[column].append(value)
+    if 'rows' in s:
+        for row in s['rows']:
+            for index in range(len(row)):
+                value = row[index]
+                value = int(value) if index == 0 else float(value)
+                column = column_names[index]
+                data[column].append(value)
     s['data'] = data
 
     # Ugly: bounceRate is percentage (not ratio), so convert it to ratios
