@@ -5,6 +5,7 @@ from flask import request
 from fitness import get_fitness
 from files import save_pickle
 import json
+from iga import get_IGA
 
 app = Flask(__name__)
 
@@ -71,9 +72,8 @@ def experiment(project):
         headers={'Access-Control-Allow-Origin':'*', 'Cache-Control':'max-age=3600'})
 
 def work(project):
-
-    from datetime import datetime
-    save_pickle(project, 'working'+datetime.now(project_setting(project, 'time_zone')).strftime('%Y-%m-%d%H-%M-%S')+'.txt','')
+    iga = get_IGA(project)
+    iga.run()
     return ""
 
 # EB looks for an 'application' callable by default.
