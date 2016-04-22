@@ -134,8 +134,8 @@ def _s3_connect(project):
 
 
 def get_service_key_path(project):
-    return os.path.join(_existing_project_path(project), 'ga/key.json')
+    file = 'ga/key.json'
+    return _get_s3_file(project, file)
 
 if __name__ == '__main__':
-    log_population('example', [[1, 0], [0, 0]])
-    log_ga('example', [1, 2, 3])
+    print get_service_key_path('example')

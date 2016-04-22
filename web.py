@@ -59,6 +59,11 @@ def individual(project, individual):
 def experiment(project):
     f = get_fitness(project)
     e = f.get_current_experiment()
+    if e is None:
+        return Response(
+            'console.log("[iga] Currently no active experiments");',
+            status=200
+        )
     vars = json.dumps(e['variations']).replace('"', '\\"')
     prefix = project_setting(project, 'prefix')
     body = 'function getQueryVariable(variable){var query = window.location.search.substring(1);var vars = query.split("&");for (var i=0;i<vars.length;i++) {var pair = vars[i].split("=");if(pair[0] == variable){return pair[1];}}return(false);}'\
