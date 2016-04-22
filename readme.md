@@ -10,7 +10,7 @@ pip install -r requirements.txt
 source env/bin/activate
 ```
 
-After making changes on Git, the code will be deployed on `http://igaui-web.us-east-1.elasticbeanstalk.com/`.
+After making changes on Git, the code will be deployed on `http://iga.stijnvoss.com/`.
 
 # Execution
 ```

@@ -1,8 +1,9 @@
 import sys
-from model import models, project_setting,search_space
+from model import models, project_setting, search_space
 from fitness import get_fitness
-from files import load_pickle,save_pickle
+from files import load_pickle, save_pickle
 import numpy as np
+
 instances = {}
 
 
@@ -35,8 +36,6 @@ class IGA(object):
             if self.fitness.has_fitness(pop):
                 self._iterate_population()
 
-
-
     def _iterate_population(self):
         # here we are going to mutate
         pass
@@ -53,10 +52,9 @@ class IGA(object):
         for i in xrange(0, pop_size - 1):
             ind = []
             for v in vars:
-                ind.append(str(np.random.choice(vars[v],1)[0]))
+                ind.append(str(np.random.choice(vars[v], 1)[0]))
             pop.append("-".join(ind))
         self._new_population(pop)
-
 
     def _get_current_population(self):
 
@@ -67,7 +65,8 @@ class IGA(object):
     def _new_population(self, population):
         self.current_population = population
         self.fitness.wants_fitness(population)
-        save_pickle(self.project,'current_population.pkl', self.current_population)
+        save_pickle(self.project, 'current_population.pkl', self.current_population)
+
 
 # tests
 if __name__ == "__main__":
