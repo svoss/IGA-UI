@@ -1,5 +1,4 @@
-![CircleCI](https://circleci.com/gh/svoss/IGA-UI.png?circle-token=:circle-token)
-[![Build Status](https://circleci.com/gh/svoss/IGA-UI.png?circle-token=:circle-token)](https://circleci.com/gh/svoss/IGA-UI.png?circle-token=:circle-token)
+[![CircleCI](https://circleci.com/gh/svoss/IGA-UI.png?style=shield&circle-token=93a2c8c56761782cf92db26bf28c99b94c33934f)](https://circleci.com/gh/svoss/IGA-UI)
 
 # Installation
 ```
