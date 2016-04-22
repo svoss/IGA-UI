@@ -1,3 +1,8 @@
+import csv
+import pprint
+
+import datetime
+import time
 import os
 import pickle
 from model import project_setting
@@ -36,8 +41,24 @@ def save_pickle(project, file, values):
     _save_s3_file(project, file)
 
 
+def log(project, population, fitness_values):
+    now = datetime.datetime.now()
+    unix = int(time.mktime(now.timetuple()))
+    file = _log_folder('%s.csv' % unix)
+    f = _force_folder_exist(project, file)
+    with open(f, 'w') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow([now, population, fitness_values])
+    _save_s3_file(project, file)
+
+
+
 def _data_folder(file):
     return os.path.join("data", file)
+
+
+def _log_folder(file):
+    return os.path.join("log", file)
 
 
 def _force_folder_exist(project, file):
@@ -56,6 +77,19 @@ def _existing_project_path(project):
     if not os.path.exists(d):
         os.makedirs(d)
     return d
+
+
+def _append_s3_file(project, file):
+    """
+    Saves a
+    :param project:
+    :param file:
+    :return:
+    """
+    b = _s3_connect(project)
+    project_path = _existing_project_path(project)
+    fs = os.path.join(project_path, file)
+    b.upload_file(fs, file)
 
 
 def _save_s3_file(project, file):
@@ -81,6 +115,10 @@ def _get_s3_file(project, file):
     return fs
 
 
+def _list_s3(project):
+    return boto3.client('s3').list_objects(Bucket=project_setting(project,'s3_bucket'))
+
+
 def _s3_connect(project):
     return boto3.resource('s3').Bucket(project_setting(project,'s3_bucket'))
 
@@ -89,5 +127,4 @@ def get_service_key_path(project):
     return os.path.join(_existing_project_path(project), 'ga/key.json')
 
 if __name__ == '__main__':
-    x = load_pickle('example','current_population.pkl')
-    save_pickle('example','current_population.pkl',x)
+    pass
