@@ -41,16 +41,26 @@ def save_pickle(project, file, values):
     _save_s3_file(project, file)
 
 
-def log(project, population, fitness_values):
+def log_population(project, population, truncate=False):
     now = datetime.datetime.now()
-    unix = int(time.mktime(now.timetuple()))
-    file = _log_folder('%s.csv' % unix)
-    f = _force_folder_exist(project, file)
-    with open(f, 'w') as csvfile:
+    file = _log_folder('population.csv')
+    f = _get_s3_file(project, file)
+    flag = 'a' if not truncate else 'w'
+    with open(f, flag) as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow([now, population, fitness_values])
+        writer.writerow([now, population])
     _save_s3_file(project, file)
 
+
+def log_ga(project, ga_results, truncate=False):
+    now = datetime.datetime.now()
+    file = _log_folder('ga.csv')
+    f = _get_s3_file(project, file)
+    flag = 'a' if not truncate else 'w'
+    with open(f, flag) as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow([now, ga_results])
+    _save_s3_file(project, file)
 
 
 def _data_folder(file):
@@ -127,4 +137,5 @@ def get_service_key_path(project):
     return os.path.join(_existing_project_path(project), 'ga/key.json')
 
 if __name__ == '__main__':
-    pass
+    log_population('example', [[1, 0], [0, 0]])
+    log_ga('example', [1, 2, 3])
