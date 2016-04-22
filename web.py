@@ -84,7 +84,7 @@ application.add_url_rule('/', 'index', example)
 application.add_url_rule('/example.html', 'example', example)
 # add a rule when the page is accessed with a name appended to the site
 # URL.
-application.add_url_rule('/<project>/work', 'work', work)
+application.add_url_rule('/<project>/work', 'work', work, methods=["POST"])
 application.add_url_rule('/<project>/experiment.js', 'experiment', experiment)
 application.add_url_rule('/<project>/code-<individual>.js', 'hello', individual)
 
