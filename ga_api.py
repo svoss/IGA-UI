@@ -30,7 +30,7 @@ def start_experiments(project, variations):
 
     :param project:     The project for which the experiments should start.
     :param variations:  The variations of the experiments (list of variation names).
-    :return: Resource object
+    :return: Experiment Id.
     """
     service = _get_service(project)
     body = {
@@ -46,7 +46,7 @@ def start_experiments(project, variations):
         webPropertyId=project_setting(project, 'ga_property'),
         profileId=project_setting(project, 'ga_profile'),
         body=body
-    ).execute()
+    ).execute()['id']
 
 
 def get_experiment_score(project, experiment_id, metrics='ga:bounceRate, ga:sessions'):
