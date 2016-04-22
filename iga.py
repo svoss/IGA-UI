@@ -16,7 +16,7 @@ def get_IGA(project):
 
 
 class IGA(object):
-    """ Responsible for managing"""
+    """ Responsible for managing the Genetic algorithm"""
     def __init__(self, project):
         """
         :param string project:
@@ -29,7 +29,6 @@ class IGA(object):
         """ Function that should be called once in a while, to optionally do a GA iteration if all fitneses are ready"""
 
         pop = self._get_current_population()
-        print pop
         if pop is None:
             self._make_initial_population()
         else:

@@ -31,8 +31,7 @@ def start_experiments(project, variations):
         profileId=project_setting(project, 'ga_profile'),
         body=body
     ).execute()
-
-def get_experiment(project):
+def get_experiment_score(project):
     pass
 
 def remove_experiment(project):
