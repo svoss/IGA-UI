@@ -50,7 +50,7 @@ class IGA(object):
         if pop is None:
             self._make_initial_population()
         else:
-            if self.fitness.has_fitness(pop):
+            if self.fitness.has_fitness():
                 self._iterate_population()
 
     def _iterate_population(self, k=3):

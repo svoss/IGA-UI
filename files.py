@@ -11,7 +11,7 @@ from botocore.exceptions import ClientError
 BASE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/projects/"
 
 
-def load_pickle(project, file):
+def load_pickle(project, file, default = None):
     """ Loads a pickle file from a project folder
 
     :param project:
@@ -23,7 +23,7 @@ def load_pickle(project, file):
         with open(f, 'rb') as io:
             return pickle.load(io)
 
-    return None
+    return default
 
 
 def save_pickle(project, file, values):

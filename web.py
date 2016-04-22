@@ -3,6 +3,7 @@ from flask import Response
 from model import models, assemble_js_for_code, project_setting
 from flask import request
 from fitness import get_fitness
+from files import save_pickle
 import json
 
 app = Flask(__name__)
@@ -69,7 +70,11 @@ def experiment(project):
         mimetype="application/javascript",
         headers={'Access-Control-Allow-Origin':'*', 'Cache-Control':'max-age=3600'})
 
+def work(project):
 
+    from datetime import datetime
+    save_pickle(project, 'working'+datetime.now(project_setting(project, 'time_zone')).strftime('%Y-%m-%d%H-%M-%S')+'.txt','')
+    return ""
 
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
@@ -79,6 +84,7 @@ application.add_url_rule('/', 'index', example)
 application.add_url_rule('/example.html', 'example', example)
 # add a rule when the page is accessed with a name appended to the site
 # URL.
+application.add_url_rule('/<project>/work', 'work', work)
 application.add_url_rule('/<project>/experiment.js', 'experiment', experiment)
 application.add_url_rule('/<project>/code-<individual>.js', 'hello', individual)
 
