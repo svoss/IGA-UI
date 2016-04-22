@@ -18,7 +18,7 @@ example = {
 }
 
 models = {
-    'example': example
+    'example': example,
 }
 
 settings = {

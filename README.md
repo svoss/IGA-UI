@@ -1,3 +1,5 @@
+![CircleCI](https://circleci.com/gh/svoss/IGA-UI.png?circle-token=:circle-token)
+
 # Installation
 ```
 virtualenv -p /usr/bin/python2.7 env
