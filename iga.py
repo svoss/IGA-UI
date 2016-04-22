@@ -43,6 +43,12 @@ class IGA(object):
         self.project = project
         self.fitness = get_fitness(project)
         self.current_population = False
+        # Cross over probability
+        self.cxpb = 0.5
+        # Mutation probability
+        self.mutpb = 0.25
+        # Bit flip probability
+        self.bitflippb = 0.05
 
     def run(self):
         """ Function that should be called once in a while, to optionally do a GA iteration if all fitneses are ready"""
@@ -75,13 +81,13 @@ class IGA(object):
 
         toolbox.register("evaluate", lambda individual: fitness[population.index(individual)])
         toolbox.register("mate", tools.cxTwoPoint)
-        toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
+        toolbox.register("mutate", tools.mutFlipBit, indpb=self.bitflippb)
         toolbox.register("select", tools.selTournament, tournsize=k)
 
         toolbox.register("population_guess", initPopulation, list, creator.Individual, population)
         population = toolbox.population_guess()
 
-        return algorithms.varAnd(population, toolbox, cxpb=0.5, mutpb=0.25)
+        return algorithms.varAnd(population, toolbox, cxpb=self.cxpb, mutpb=self.mutpb)
 
     def _make_initial_population(self):
         pop_size = project_setting(self.project, 'population_size')
