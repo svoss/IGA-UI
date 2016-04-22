@@ -37,7 +37,7 @@ class IGA(object):
                 self._iterate_population()
 
     def _iterate_population(self):
-        # here we are going to mutate
+        # iterate fit
         pass
 
     def _make_initial_population(self):
