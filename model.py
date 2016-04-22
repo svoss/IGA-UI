@@ -30,16 +30,19 @@ settings = {
         'ga_property': 'UA-76516435-2',
         'ga_profile': '120409781',
         'time_zone': pytz.timezone('Europe/Amsterdam'),
-        'prefix': '/example/'
+        'prefix': '/example/',
+        's3_bucket': 'iga-example-stijnvoss2',
+        's3_region': 'us-east-1',
     },
     'FV': {
         'start_code': "0-0-0",
         'evaluation_time_per_individual': .2,  # time need per individual to determine fitness in days
         'population_size': 5,
-        'time_zone': pytz.timezone('Europe/Amsterdam')
+        'time_zone': pytz.timezone('Europe/Amsterdam'),
+        's3_bucket':'',
+        's3_region':'',
     }
 }
-
 
 def assemble_js_for_code(project, code):
     """ Gets the js-code for a certain project/individual combination
