@@ -49,18 +49,21 @@ def start_experiments(project, variations):
     ).execute()
 
 
-def get_experiment_score(project, experiment_id):
+def get_experiment_score(project, experiment_id, metrics='ga:bounceRate, ga:sessions'):
     """
     The scores for an experiment.
 
     :param project: The project to calculate the experiment score for
     :param experiment_id: Id of the experiment to get scores for
-    :return: A matrix where the first row are the number of sessions and the second row are the bounce rates and the
-             columns are the different variants in the experiment.
+    :param metrics: The metrics to use (comma seperated)
+    :return: A matrix where the rows are the given metrics and the the columns are the different variants in
+             the experiment.
     """
-    data = get_experiment_data(project, experiment_id, metrics='ga:bounceRate, ga:sessions', start_date='2016-01-01',
+    data = get_experiment_data(project, experiment_id, metrics=metrics, start_date='2016-01-01',
                                end_date='today')
-    return np.matrix([data['data']['ga:sessions'], data['data']['ga:bounceRate']])
+    metric_names = [metric.strip() for metric in metrics.split(',')]
+    matrix = [data['data'][metric_name] for metric_name in metric_names]
+    return np.matrix(matrix)
 
 
 def get_experiment(project, experiment_id):
@@ -193,7 +196,7 @@ if __name__ == '__main__':
     experiments = list_experiments('example')
     if len(experiments) > 0:
         experiment = experiments[0]
-        scores = get_experiment_score('example', experiment['id'])
+        scores = get_experiment_score('example', experiment['id'], metrics='ga:bounceRate, ga:sessions, ga:hits')
         print(scores)
     else:
         print 'No experiments found'
