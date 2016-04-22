@@ -4,6 +4,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 from files import get_service_key_path
 import httplib2
 from datetime import datetime
+
+
 def list_experiments(project):
     service = _get_service(project)
     s = service.management().experiments().list(
@@ -15,14 +17,15 @@ def list_experiments(project):
     for i in s.get('items'):
         print i
 
+
 def start_experiments(project, variations):
     service = _get_service(project)
     body = {
-        'name' : 'IGA - ' + datetime.now(project_setting(project, 'time_zone')).strftime('%Y-%m-%d %H:%M:%S'),
-        'variations': [{'name':v} for v in variations],
+        'name': 'IGA - ' + datetime.now(project_setting(project, 'time_zone')).strftime('%Y-%m-%d %H:%M:%S'),
+        'variations': [{'name': v} for v in variations],
         'servingFramework': 'API',
         'objectiveMetric': 'ga:bounces',
-        'status':'RUNNING'
+        'status': 'RUNNING'
     }
 
     s = service.management().experiments().insert(
@@ -32,17 +35,16 @@ def start_experiments(project, variations):
         body=body
     ).execute()
 
+
 def get_experiment(project):
     pass
+
 
 def remove_experiment(project):
     pass
 
 
-
 def _build_service(api_name, api_version, scope, key_file_location):
-
-
     """Get a service that communicates to a Google API.
 
     Args:
@@ -76,6 +78,5 @@ def _get_service(project):
     return _build_service('analytics', 'v3', scope, key_file_location)
 
 
-
 if __name__ == '__main__':
-  list_experiments('example')
+    list_experiments('example')
