@@ -1,4 +1,5 @@
 import sys
+import numpy as np
 from model import models
 
 instances = {}
@@ -39,7 +40,7 @@ class Fitness(object):
         :return:
         """
 
-        return {}
+        return [np.random.random() for p in population]
 
     def has_fitness(self, population=[]):
         return False

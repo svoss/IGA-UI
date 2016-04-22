@@ -40,13 +40,13 @@ def _data_folder(file):
     return os.path.join("data", file)
 
 
-def _force_folder_exist(project,file):
+def _force_folder_exist(project, file):
     """ Gets project folder and also make sure that the path exists"""
     d = _existing_project_path(project)
     full_path = os.path.join(d, file)
     dir = os.path.dirname(full_path)
     if not os.path.exists(dir):
-        os.makedirs(d)
+        os.makedirs(dir)
     return full_path
 
 
