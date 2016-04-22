@@ -33,9 +33,11 @@ def start_experiments(project, variations):
     :return: Experiment Id.
     """
     service = _get_service(project)
+    start_code = project_setting(project, 'start_code')
+    base_url = project_setting(project,'example_url')
     body = {
         'name': 'IGA - ' + datetime.now(project_setting(project, 'time_zone')).strftime('%Y-%m-%d %H:%M:%S'),
-        'variations': [{'name': v} for v in variations],
+        'variations': [{'name': v, 'url':(base_url if start_code == v else '?iga-code='+v)} for v in variations],
         'servingFramework': 'API',
         'objectiveMetric': 'ga:bounces',
         'status': 'RUNNING'

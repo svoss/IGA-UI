@@ -31,6 +31,7 @@ settings = {
         'ga_profile': '120409781',
         'time_zone': pytz.timezone('Europe/Amsterdam'),
         'prefix': '/example/',
+        'example_url':'http://iga.stijnvoss.com/',
         's3_bucket': 'iga-example-stijnvoss2',
         's3_region': 'us-east-1',
     },

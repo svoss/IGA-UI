@@ -61,10 +61,14 @@ def experiment(project):
     e = f.get_current_experiment()
     vars = json.dumps(e['variations']).replace('"', '\\"')
     prefix = project_setting(project, 'prefix')
-    body = 'document.write("<sc"+"ript src=\'http" + (document.location.protocol == \'https:\' ? \'s://ssl\' : \'://www\') + ".google-analytics.com/cx/api.js?experiment=' + \
+    body = 'function getQueryVariable(variable){var query = window.location.search.substring(1);var vars = query.split("&");for (var i=0;i<vars.length;i++) {var pair = vars[i].split("=");if(pair[0] == variable){return pair[1];}}return(false);}'\
+            'var code = getQueryVariable(\'iga-code\');console.log(code);' \
+            'if (code === false) {'\
+            'document.write("<sc"+"ript src=\'http" + (document.location.protocol == \'https:\' ? \'s://ssl\' : \'://www\') + ".google-analytics.com/cx/api.js?experiment=' + \
            e['experiment_id'] + '\'><\\/script>");' \
            'document.write("<script>var chosenVariation = cxApi.chooseVariation(); var variations =' + vars + '; var code = variations[chosenVariation]; ' \
-           'document.write(\\"<sc\\"+\\"ript src=\'' + prefix + 'code-\\"+code+\\".js\'></scri\\"+\\"pt>\\");</scri"+"pt>");'
+           'document.write(\\"<sc\\"+\\"ript src=\'' + prefix + 'code-\\"+code+\\".js\'></scri\\"+\\"pt>\\");</scri"+"pt>"); } else {' \
+           'document.write("<sc"+"ript src=\'' + prefix + 'code-"+code+".js\'></scri"+"pt>");}'
     return Response(
         body,
         status=200,
