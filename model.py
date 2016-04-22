@@ -44,6 +44,7 @@ settings = {
     }
 }
 
+
 def assemble_js_for_code(project, code):
     """ Gets the js-code for a certain project/individual combination
 

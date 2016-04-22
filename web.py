@@ -49,7 +49,8 @@ def individual(project, individual):
     return Response(
         assemble_js_for_code(project, individual),
         status=200,
-        mimetype="application/javascript"
+        mimetype="application/javascript",
+        headers={'Access-Control-Allow-Origin':'*', 'Cache-Control':'max-age=86400'}
     )
 
 
@@ -58,10 +59,16 @@ def experiment(project):
     e = f.get_current_experiment()
     vars = json.dumps(e['variations']).replace('"', '\\"')
     prefix = project_setting(project, 'prefix')
-    return 'document.write("<sc"+"ript src=\'http" + (document.location.protocol == \'https:\' ? \'s://ssl\' : \'://www\') + ".google-analytics.com/cx/api.js?experiment=' + \
+    body = 'document.write("<sc"+"ript src=\'http" + (document.location.protocol == \'https:\' ? \'s://ssl\' : \'://www\') + ".google-analytics.com/cx/api.js?experiment=' + \
            e['experiment_id'] + '\'><\\/script>");' \
-                                'document.write("<script>var chosenVariation = cxApi.chooseVariation(); var variations =' + vars + '; var code = variations[chosenVariation]; ' \
-                                                                                                                                   'document.write(\\"<sc\\"+\\"ript src=\'' + prefix + 'code-\\"+code+\\".js\'></scri\\"+\\"pt>\\");</scri"+"pt>");'
+           'document.write("<script>var chosenVariation = cxApi.chooseVariation(); var variations =' + vars + '; var code = variations[chosenVariation]; ' \
+           'document.write(\\"<sc\\"+\\"ript src=\'' + prefix + 'code-\\"+code+\\".js\'></scri\\"+\\"pt>\\");</scri"+"pt>");'
+    return Response(
+        body,
+        status=200,
+        mimetype="application/javascript",
+        headers={'Access-Control-Allow-Origin':'*', 'Cache-Control':'max-age=3600'})
+
 
 
 # EB looks for an 'application' callable by default.
