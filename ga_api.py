@@ -59,7 +59,7 @@ def get_experiment_score(project, experiment_id, metrics='ga:bounceRate, ga:sess
     :return: A matrix where the rows are the given metrics and the the columns are the different variants in
              the experiment.
     """
-    data = get_experiment_data(project, experiment_id, metrics=metrics, start_date='2016-01-01',
+    data = _get_experiment_data(project, experiment_id, metrics=metrics, start_date='2016-01-01',
                                end_date='today')
     metric_names = [metric.strip() for metric in metrics.split(',')]
     matrix = [data['data'][metric_name] for metric_name in metric_names]
@@ -85,7 +85,7 @@ def get_experiment(project, experiment_id):
     return s
 
 
-def get_experiment_data(project, experiment_id, metrics='ga:sessions, ga:bounceRate', start_date='30daysAgo',
+def _get_experiment_data(project, experiment_id, metrics='ga:sessions, ga:bounceRate', start_date='30daysAgo',
                         end_date='today'):
     """
     Get data for an experiment.

@@ -1,21 +1,20 @@
 import csv
-import pprint
-
 import datetime
-import time
 import os
 import pickle
 from model import project_setting
 import boto3
 from botocore.exceptions import ClientError
+
 BASE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/projects/"
 
 
 def load_pickle(project, file):
-    """ Loads a pickle file from a project folder
+    """
+    Loads a pickle file from a project folder
 
-    :param project:
-     :param file:
+    :param project: The name of the project.
+    :param file:    The file.
     """
     file = _data_folder(file)
     f = _get_s3_file(project, file)
@@ -126,15 +125,16 @@ def _get_s3_file(project, file):
 
 
 def _list_s3(project):
-    return boto3.client('s3').list_objects(Bucket=project_setting(project,'s3_bucket'))
+    return boto3.client('s3').list_objects(Bucket=project_setting(project, 's3_bucket'))
 
 
 def _s3_connect(project):
-    return boto3.resource('s3').Bucket(project_setting(project,'s3_bucket'))
+    return boto3.resource('s3').Bucket(project_setting(project, 's3_bucket'))
 
 
 def get_service_key_path(project):
     return os.path.join(_existing_project_path(project), 'ga/key.json')
+
 
 if __name__ == '__main__':
     log_population('example', [[1, 0], [0, 0]])
