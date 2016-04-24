@@ -1,0 +1,1 @@
+$('div.filmpagina-info-cover div.img').before($('div.filmpagina-info-cover div.watchlist'));
