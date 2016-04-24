@@ -48,12 +48,12 @@ class Fitness(object):
         :param population:
         :return:
         """
-        if not self._get_finished():
+        if False:
             raise Exception("Fatal get_fitness called while population not valid")
         else:
             hits = self._try_get_from_cache(population)
             # Calculate part of population that is not yet cached and should therefore come from ga
-            variations = [p for p in population if p not in hits]
+            variations = [p for p in population if p not in hits.keys()]
 
             # when we need data from google analytics
             if len(variations) > 0:
@@ -62,25 +62,28 @@ class Fitness(object):
                 score = get_experiment_score(self.project, ex['experiment_id'])
                 experiment_vars = ex['variations']
 
-                # log all results
-                log_ga(self.project, score)
-
                 for i in range(score.shape[1]):
                     v = experiment_vars[i]
                     if v in variations:
                         variations.remove(v)
                         hits[v] = self._calc_fitness(score[0,i], score[1,i])
 
-        if len(variations) > 0:
-            raise Exception("Could not find all fitnesses")
-        else:
-            self._save_cache(hits)
+                if len(variations) > 0:
+                    log_ga(self.project, "Could not find all fitnesses, re-planning for a day")
+                    self._set_finished_in(86400)
+                else:
+                    # log all results
+                    log_ga(self.project, score)
+                    self._save_cache(hits)
 
-        #make sure to return in correct order
-        return [hits[p] for p in population]
+                    #make sure to return in correct order
+                    return [hits[p] for p in population]
+        return False
 
     def has_fitness(self):
-        return self._get_finished() < time()
+        if self._get_finished() < time():
+            return self._get_finished(True) < time()
+
 
     def get_current_experiment(self):
         return load_pickle(self.project, 'current_ga_experiment.pkl')
@@ -112,8 +115,8 @@ class Fitness(object):
     def _set_finished_in(self,in_secs=0):
         save_pickle(self.project,'finished.pkl',time()+in_secs)
 
-    def _get_finished(self):
-        return load_pickle(self.project, 'finished.pkl',0)
+    def _get_finished(self, forceS3 = False):
+        return load_pickle(self.project, 'finished.pkl',0, forceS3)
 
     def _save_cache(self, fitnesses):
         save_pickle(self.project,'fitness_cache.pkl',fitnesses )
@@ -125,7 +128,7 @@ class Fitness(object):
         return {}
 
     def _calc_fitness(self, bounceRate, sessions):
-        return bounceRate
+        return 1. - bounceRate
 
 
 

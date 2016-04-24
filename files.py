@@ -11,14 +11,14 @@ from botocore.exceptions import ClientError
 BASE_PATH = os.path.dirname(os.path.realpath(__file__)) + "/projects/"
 
 
-def load_pickle(project, file, default = None):
+def load_pickle(project, file, default = None, forceS3 = True):
     """ Loads a pickle file from a project folder
 
     :param project:
      :param file:
     """
     file = _data_folder(file)
-    f = _get_s3_file(project, file)
+    f = _get_s3_file(project, file, forceS3)
     if os.path.exists(f):
         with open(f, 'rb') as io:
             return pickle.load(io)
@@ -115,13 +115,14 @@ def _save_s3_file(project, file):
     b.upload_file(fs, file)
 
 
-def _get_s3_file(project, file):
+def _get_s3_file(project, file, force=True):
     b = _s3_connect(project)
     fs = _force_folder_exist(project, file)
-    try:
-        b.download_file(file, fs)
-    except ClientError:
-        pass
+    if not os.path.exists(fs) or force:
+        try:
+            b.download_file(file, fs)
+        except ClientError:
+            pass
     return fs
 
 

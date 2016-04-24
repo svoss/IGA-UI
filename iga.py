@@ -72,10 +72,12 @@ class IGA(object):
         population_str = self._get_current_population()
         population = [intstring_to_string(individual) for individual in population_str]
         fitness = fitness_object.get_fitness(population_str)
-        ranges = get_int_ranges(self.project)
-        population = self._ga_selection(population, fitness, ranges, k=k)
-        population = ['-'.join([str(i) for i in list(individual)]) for individual in population]
-        self._new_population(population)
+        # Sometimes fitness can be false if experiment was not complete
+        if fitness is not False:
+            ranges = get_int_ranges(self.project)
+            population = self._ga_selection(population, fitness, ranges, k=k)
+            population = ['-'.join([str(i) for i in list(individual)]) for individual in population]
+            self._new_population(population)
 
     def _ga_selection(self, population, fitness, ranges, k=3):
         toolbox = base.Toolbox()
