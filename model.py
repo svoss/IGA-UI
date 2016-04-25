@@ -87,10 +87,11 @@ settings = {
         's3_region':'us-east-1',
         'evaluation_time_per_individual': .2,  # time need per individual to determine fitness in days
         'population_size': 5,
-        'ga_account': '76516435',
-        'ga_property': 'UA-76516435-2',
-        'ga_profile': '120409781',
+        'ga_account': '5318270',
+        'ga_property': 'UA-5318270-1',
+        'ga_profile': '120892623',
         'prefix': 'http://cdn-iga.stijnvoss.com/FV/',
+        'example_url':'http://www.filmvandaag.nl/film/1633-the-hitchhikers-guide-to-the-galaxy'
     }
 }
 
