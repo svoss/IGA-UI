@@ -90,7 +90,7 @@ settings = {
         'ga_account': '76516435',
         'ga_property': 'UA-76516435-2',
         'ga_profile': '120409781',
-        'prefix': 'http://iga.stijnvoss.com/FV/',
+        'prefix': 'http://cdn-iga.stijnvoss.com/FV/',
     }
 }
 
