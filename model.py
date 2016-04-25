@@ -3,9 +3,9 @@ import pytz
 FV = {
     'labels': {
         'normal': '',
-        'red': 'var labels=document.getElementsByClassName("labels"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#e51709"; s.textShadow:"none";} ',
-        'green': 'var labels=document.getElementsByClassName("labels"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#0dbd16"; s.textShadow:"none";}',
-        'grey':'var labels=document.getElementsByClassName("labels"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#999999"; s.textShadow:"none";}'
+        'red': 'var labels=document.getElementsByClassName("labels"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#e51709"; s.textShadow="none";} ',
+        'green': 'var labels=document.getElementsByClassName("labels"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#0dbd16"; s.textShadow="none";}',
+        'grey':'var labels=document.getElementsByClassName("labels"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#999999"; s.textShadow="none";}'
     },
     'genres': {
         'normal': '',
@@ -16,7 +16,7 @@ FV = {
     'comparable_blocks': {
         'normal': '',
         # ff checken of er nog iets aan de de lazyload gedaan kan worden..
-        'up': "$('div.filmpagina-info').after($('div.filmpagina-vergelijkbaar-container'));"
+        'up': "$('div.filmpagina-info').after($('div.filmpagina-vergelijkbaar-container'));$('img.vergelijkbaar-cover').trigger('appear');"
     },
     'actors_block': {
         'normal': '',
