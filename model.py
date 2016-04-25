@@ -3,9 +3,9 @@ import pytz
 FV = {
     'labels': {
         'normal': '',
-        'red': 'var labels=document.getElementsByClassName("labels"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#e51709"; s.textShadow="none";} ',
-        'green': 'var labels=document.getElementsByClassName("labels"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#0dbd16"; s.textShadow="none";}',
-        'grey':'var labels=document.getElementsByClassName("labels"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#999999"; s.textShadow="none";}'
+        'red': 'var labels=document.getElementsByClassName("label"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#e51709"; s.textShadow="none";} ',
+        'green': 'var labels=document.getElementsByClassName("label"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#0dbd16"; s.textShadow="none";}',
+        'grey':'var labels=document.getElementsByClassName("label"); for(var i =1; i < labels.length; i++){var s = labels[i].style; s.color="white"; s.background="#999999"; s.textShadow="none";}'
     },
     'genres': {
         'normal': '',
@@ -20,7 +20,7 @@ FV = {
     },
     'actors_block': {
         'normal': '',
-        'up': "$('li.genrelinks').after($('strong:contains(\"Acteurs\")').parent())"
+        'up': "$('li.genrelinks').after($('strong:contains(\"Acteurs\")').parent());"
     },
     'filmpagina-knop': {
         'normal':'',
@@ -113,7 +113,7 @@ def assemble_js_for_code(project, code):
             rule = project[rules[i]]
 
             options = sorted(rule.keys())
-            print options
+            print rules[i], options
             if 0 <= ri < len(options):
                 js.append(rule[options[ri]])
         return "".join(js)
