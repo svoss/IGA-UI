@@ -5,4 +5,4 @@ cron:
    schedule: "* /2 * * *"
  - name: "fv-work"          # required - unique across all entries in this file
    url: "/FV/work"              # required - does not need to be unique
-   schedule: "*/30 * * * *"git s
+   schedule: "*/30 * * * *"
