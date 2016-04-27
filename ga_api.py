@@ -39,7 +39,7 @@ def start_experiments(project, variations):
         'name': 'IGA - ' + datetime.now(project_setting(project, 'time_zone')).strftime('%Y-%m-%d %H:%M:%S'),
         'variations': [{'name': v, 'url': (base_url if start_code == v else '?iga-code=' + v)} for v in variations],
         'servingFramework': 'API',
-        'objectiveMetric': 'ga:bounces',
+        'objectiveMetric': 'ga:pageviews',
         'status': 'RUNNING'
     }
 
@@ -51,7 +51,7 @@ def start_experiments(project, variations):
     ).execute()['id']
 
 
-def get_experiment_score(project, experiment_id, metrics='ga:bounceRate, ga:sessions'):
+def get_experiment_score(project, experiment_id, metrics='ga:bounceRate, ga:exitRate'):
     """
     The scores for an experiment.
 
@@ -87,7 +87,7 @@ def get_experiment(project, experiment_id):
     return s
 
 
-def _get_experiment_data(project, experiment_id, metrics='ga:sessions, ga:bounceRate', start_date='30daysAgo',
+def _get_experiment_data(project, experiment_id, metrics='ga:pageviews, ga:exitRate', start_date='30daysAgo',
                          end_date='today'):
     """
     Get data for an experiment.
@@ -133,6 +133,14 @@ def _get_experiment_data(project, experiment_id, metrics='ga:sessions, ga:bounce
     # Make sessions ints
     if 'ga:sessions' in s['data']:
         s['data']['ga:sessions'] = [int(item) for item in s['data']['ga:sessions']]
+
+    # Ugly: exitRate is percentage (not ratio), so convert it to ratios
+    if 'ga:exitRate' in s['data']:
+        s['data']['ga:exitRate'] = [item / 100. for item in s['data']['ga:exitRate']]
+
+    # Make sessions ints
+    if 'ga:pageviews' in s['data']:
+        s['data']['ga:pageviews'] = [int(item) for item in s['data']['ga:pageviews']]
 
     return s
 
@@ -196,10 +204,12 @@ def _get_service(project):
 
 
 if __name__ == '__main__':
-    experiments = list_experiments('example')
+    experiments = list_experiments('FV')
+    for e in experiments:
+        print e['name'],e['id']
     if len(experiments) > 0:
         experiment = experiments[0]
-        scores = get_experiment_score('example', experiment['id'], metrics='ga:bounceRate, ga:sessions, ga:hits')
+        scores = get_experiment_score('FV', 'zQYn4S5ZR1mDiD75IC22KA', metrics='ga:pageviews, ga:exitRate')
         print(scores)
     else:
         print 'No experiments found'
