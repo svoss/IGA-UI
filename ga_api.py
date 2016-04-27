@@ -40,6 +40,7 @@ def start_experiments(project, variations):
         'variations': [{'name': v, 'url': (base_url if start_code == v else '?iga-code=' + v)} for v in variations],
         'servingFramework': 'API',
         'objectiveMetric': 'ga:pageviews',
+        'equalWeighting': True,
         'status': 'RUNNING'
     }
 
