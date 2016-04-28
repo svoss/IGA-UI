@@ -210,7 +210,7 @@ if __name__ == '__main__':
         print e['name'],e['id']
     if len(experiments) > 0:
         experiment = experiments[0]
-        scores = get_experiment_score('FV', 'zQYn4S5ZR1mDiD75IC22KA', metrics='ga:pageviews, ga:exitRate')
+        scores = get_experiment_score('FV', 'x8DtGwZYTyq2eWG8m5UK7Q', metrics='ga:pageviews, ga:exitRate')
         print(scores)
     else:
         print 'No experiments found'
