@@ -27,6 +27,67 @@ def get_service(api_name, api_version, scope, key_file_location):
     return service
 
 
+def get_experiment(service, experiment_id):
+    # Use the Analytics service object to retrieve an experiment.
+
+    # First, fetch the profile
+    profile = get_first_profile_id(service)
+    accounts = service.management().accounts().list().execute()
+
+    if accounts.get('items'):
+        # Get the first Google Analytics account.
+        account = accounts.get('items')[0]
+
+        account = account.get('id')
+        # Get a list of all the properties for the first account.
+        properties = service.management().webproperties().list(accountId=account).execute()
+
+        if properties.get('items'):
+            # Get the first property id.
+            property_id = properties.get('items')[0].get('id')
+
+            # Now fetch the experiments
+            experiments = service.management().experiments().get(
+                accountId=account,
+                webPropertyId=property_id,
+                profileId=profile,
+                experimentId=experiment_id
+            ).execute()
+
+            return experiments
+    return None
+
+
+def get_experiments(service):
+    # Use the Analytics service object to get a list of experiments.
+
+    # First, fetch the profile
+    profile = get_first_profile_id(service)
+    accounts = service.management().accounts().list().execute()
+
+    if accounts.get('items'):
+        # Get the first Google Analytics account.
+        account = accounts.get('items')[0]
+
+        account = account.get('id')
+        # Get a list of all the properties for the first account.
+        properties = service.management().webproperties().list(accountId=account).execute()
+
+        if properties.get('items'):
+            # Get the first property id.
+            property_id = properties.get('items')[0].get('id')
+
+            # Now fetch the experiments
+            experiments = service.management().experiments().list(
+                accountId=account,
+                webPropertyId=property_id,
+                profileId=profile
+            ).execute()
+
+            return experiments
+    return None
+
+
 def get_first_profile_id(service):
     # Use the Analytics service object to get the first profile id.
 
@@ -61,14 +122,15 @@ def get_first_profile_id(service):
     return None
 
 
-def get_results(service, profile_id):
+def get_results(service, profile_id, metrics='ga:sessions', start_date='7daysAgo', end_date='today', dimensions=''):
     # Use the Analytics Service Object to query the Core Reporting API
     # for the number of sessions within the past seven days.
     return service.data().ga().get(
         ids='ga:' + profile_id,
-        start_date='7daysAgo',
-        end_date='today',
-        metrics='ga:sessions').execute()
+        start_date=start_date,
+        end_date=end_date,
+        dimensions=dimensions,
+        metrics=metrics).execute()
 
 
 def print_results(results):
