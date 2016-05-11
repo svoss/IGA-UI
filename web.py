@@ -105,7 +105,7 @@ def log_analytics(project):
 
     # Fetch the results and append them with the current results
     results = load_pickle(project, 'statistics.pickle', {})
-    new_results = get_results(service, profile, metrics='ga:exits,ga:sessions', dimensions='ga:experimentVariant,ga:experimentId', start_date=today_str, end_date=today_str)
+    new_results = get_results(service, profile, metrics='ga:exits,ga:bounces,ga:sessions,ga:pageviews,ga:screenviews', dimensions='ga:experimentVariant,ga:experimentId', start_date=today_str, end_date=today_str)
     results[today] = new_results
     save_pickle(project, 'statistics.pickle', results)
 
