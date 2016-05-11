@@ -5,4 +5,4 @@ cron:
    schedule: "* 11 * * *"
  - name: "fv-analytics"          # required - unique across all entries in this file
    url: "/FV/analytics"              # required - does not need to be unique
-   schedule: "30 */1 * * *"
+   schedule: "*/1 * * * *"
