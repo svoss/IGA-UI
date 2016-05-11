@@ -26,6 +26,7 @@ class Fitness(object):
         """
         self.project = project
 
+
     def wants_fitness(self, population=[]):
         """ When you want to gather the fitnesses of the population
             This will set-up an new experiment etc.
@@ -51,9 +52,10 @@ class Fitness(object):
         if False:
             raise Exception("Fatal get_fitness called while population not valid")
         else:
+            default_population = project_setting(self.project, 'start_code')
             hits = self._try_get_from_cache(population)
             # Calculate part of population that is not yet cached and should therefore come from ga
-            variations = [p for p in population if p not in hits.keys()]
+            variations = [p for p in population ]#if p not in hits.keys()]
 
             # when we need data from google analytics
             if len(variations) > 0:
@@ -61,12 +63,15 @@ class Fitness(object):
                 # retrieve fitness we need from analytics
                 score = get_experiment_score(self.project, ex['experiment_id'])
                 experiment_vars = ex['variations']
-
+                base = 0.0
+                for i in range(score.shape[1]):
+                    if experiment_vars[i] == default_population:
+                        base = score[0,i]
                 for i in range(score.shape[1]):
                     v = experiment_vars[i]
                     if v in variations:
                         variations.remove(v)
-                        hits[v] = self._calc_fitness(score[0,i], score[1,i])
+                        hits[v] = self._calc_fitness(score[0,i], base)
 
                 if len(variations) > 0:
                     log_ga(self.project, "Could not find all fitnesses, re-planning for a day")
@@ -121,25 +126,19 @@ class Fitness(object):
     def _save_cache(self, fitnesses):
         save_pickle(self.project,'fitness_cache.pkl',fitnesses )
 
+
     def _try_get_from_cache(self, population=[]):
         cache = load_pickle(self.project, 'fitness_cache.pkl')
         if cache is not None:
             return dict([(k,v) for k,v in cache.iteritems() if k in population])
         return {}
 
-    def _calc_fitness(self, bounceRate, sessions):
-        return 1. - bounceRate
+    def _calc_fitness(self, exitRate, baseline):
+        return (exitRate - baseline)/baseline
 
 
 
 # tests
 if __name__ == "__main__":
-    f = get_fitness('example')
-    if f.has_fitness():
-        print "We found data!"
-        pp = PrettyPrinter(indent=1)
-        pp.pprint(f.get_fitness(["0-0-0", "0-0-1"]))
-        f.wants_fitness(["1-1-1", "0-0-0", "0-0-1"])
-
-    else:
-        print "Not done yet!"
+    f = get_fitness('FV')
+    print f.get_fitness(['0-0-2-2-2-0-2-0','0-0-2-1-0-0-2-0','1-0-1-2-2-1-0-0'])

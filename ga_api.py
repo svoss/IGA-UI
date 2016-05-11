@@ -5,8 +5,8 @@ from files import get_service_key_path
 import httplib2
 from datetime import datetime
 import numpy as np
-
-
+from files import _get_s3_file, _save_s3_file
+from csv import writer
 def list_experiments(project):
     """
     List the experiments.
@@ -88,6 +88,50 @@ def get_experiment(project, experiment_id):
     return s
 
 
+def stop_experiment(project, experiment_id):
+    """
+    Get an experiment.
+
+    :param project: The project
+    :param experiment_id: The id of the experiment
+    :return: (start, end_date)
+    """
+    service = _get_service(project)
+    #get current state, change name to current name appended with end date
+    current = get_experiment('FV', experiment_id)
+
+    #get start time from name
+    start = datetime.strptime(current['name'], 'IGA - %Y-%m-%d %H:%M:%S')
+    end_str = datetime.now(project_setting(project, 'time_zone')).strftime('%Y-%m-%d %H:%M:%S')
+    # remove timezone and nanoseconds as we also did in the start
+    end = datetime.strptime(end_str, '%Y-%m-%d %H:%M:%S')
+    current['name'] = current['name'] + " - " + end_str
+    current['status'] = 'ENDED'
+
+    s = service.management().experiments().update(
+        accountId=project_setting(project, 'ga_account'),
+        webPropertyId=project_setting(project, 'ga_property'),
+        profileId=project_setting(project, 'ga_profile'),
+        experimentId=experiment_id,
+        body=current
+    ).execute()
+    vars = [c['name'] for c in current['variations']]
+    return vars, start, end
+
+def _log_experiment_results(project, ex_id, start, stop, all_pageviews, all_exitRate ,vars, data):
+    f = _get_s3_file(project, 'ga-log.csv')
+
+    # append and optionally create new of if not exists
+    with open(f, 'a+') as io:
+        w = writer(io)
+        for vi in range(len(data)):
+            v = data['index'][vi]
+            pv = data['ga:pageviews'][vi]
+            per = data['ga:exitRate'][vi]
+            w.writerow([ex_id, start, stop, all_pageviews, all_exitRate, v, pv, per])
+    _save_s3_file(project, 'ga-log.csv')
+
+
 def _get_experiment_data(project, experiment_id, metrics='ga:pageviews, ga:exitRate', start_date='30daysAgo',
                          end_date='today'):
     """
@@ -143,6 +187,10 @@ def _get_experiment_data(project, experiment_id, metrics='ga:pageviews, ga:exitR
     if 'ga:pageviews' in s['data']:
         s['data']['ga:pageviews'] = [int(item) for item in s['data']['ga:pageviews']]
 
+    #stop & log
+    vars, start, stop = stop_experiment(project, experiment_id)
+    totals = s['totalsForAllResults']
+    _log_experiment_results(project, experiment_id, start.isoformat(), stop.isoformat(), totals['ga:pageviews'], totals['ga:exitRate'], vars, s['data'])
     return s
 
 
@@ -205,12 +253,4 @@ def _get_service(project):
 
 
 if __name__ == '__main__':
-    experiments = list_experiments('FV')
-    for e in experiments:
-        print e['name'],e['id']
-    if len(experiments) > 0:
-        experiment = experiments[0]
-        scores = get_experiment_score('FV', 'x8DtGwZYTyq2eWG8m5UK7Q', metrics='ga:pageviews, ga:exitRate')
-        print(scores)
-    else:
-        print 'No experiments found'
+    print _get_experiment_data('FV','r9vplR-kQ8aZ1TsK8ZmbbQ' )

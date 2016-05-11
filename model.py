@@ -79,7 +79,7 @@ settings = {
         'example_url':'http://iga.stijnvoss.com/',
         's3_bucket': 'iga-example-stijnvoss2',
         's3_region': 'us-east-1',
-        'search_algorithm': 'explore'
+        'search_algorithm': 'BF'
     },
     'FV': {
         'start_code': "0-0-2-2-2-0-2-0",
