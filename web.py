@@ -95,7 +95,7 @@ def log_analytics(project):
 
     # Load the experiments
     scope = ['https://www.googleapis.com/auth/analytics.readonly']
-    key_file_location = get_service_key_path('example')
+    key_file_location = get_service_key_path(project)
     service = get_service('analytics', 'v3', scope, key_file_location)
     profile = get_first_profile_id(service)
 
