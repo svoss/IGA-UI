@@ -12,7 +12,7 @@ def get_fitness(project):
             raise Exception("No project %s exists" % project)
         else:
             instances[project] = Fitness(project)
-    return instances[project]
+    return instances[project]  
 
 
 class Fitness(object):

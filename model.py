@@ -79,6 +79,7 @@ settings = {
         'example_url':'http://iga.stijnvoss.com/',
         's3_bucket': 'iga-example-stijnvoss2',
         's3_region': 'us-east-1',
+        'search_algorithm': 'explore'
     },
     'FV': {
         'start_code': "0-0-2-2-2-0-2-0",
@@ -91,7 +92,8 @@ settings = {
         'ga_property': 'UA-5318270-1',
         'ga_profile': '120892623',
         'prefix': 'http://cdn-iga.stijnvoss.com/FV/',
-        'example_url':'http://www.filmvandaag.nl/film/1633-the-hitchhikers-guide-to-the-galaxy'
+        'example_url':'http://www.filmvandaag.nl/film/1633-the-hitchhikers-guide-to-the-galaxy',
+        'search_algorithm': 'IGA'
     }
 }
 
