@@ -1,11 +1,8 @@
-version: 2
+version: 1
 cron:
- - name: "example-work"          # required - unique across all entries in this file
-   url: "/example/work"              # required - does not need to be unique
-   schedule: "* */2 * * *"
  - name: "fv-work"          # required - unique across all entries in this file
    url: "/FV/work"              # required - does not need to be unique
-   schedule: "*/30 * * * *"
- - name: "example-analytics"          # required - unique across all entries in this file
-   url: "/example/analytics"              # required - does not need to be unique
+   schedule: "* 11 * * *"
+ - name: "fv-analytics"          # required - unique across all entries in this file
+   url: "/FV/analytics"              # required - does not need to be unique
    schedule: "* */1 * * *"
