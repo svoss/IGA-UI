@@ -60,6 +60,7 @@ class Fitness(object):
             # when we need data from google analytics
             if len(variations) > 0:
                 ex = self.get_current_experiment()
+
                 # retrieve fitness we need from analytics
                 score = get_experiment_score(self.project, ex['experiment_id'])
                 experiment_vars = ex['variations']
@@ -72,7 +73,7 @@ class Fitness(object):
                     if v in variations:
                         variations.remove(v)
                         hits[v] = self._calc_fitness(score[0,i], base)
-
+                print variations
                 if len(variations) > 0:
                     log_ga(self.project, "Could not find all fitnesses, re-planning for a day")
                     self._set_finished_in(86400)
@@ -140,5 +141,9 @@ class Fitness(object):
 
 # tests
 if __name__ == "__main__":
+    cache = load_pickle('FV', 'fitness_cache.pkl')
+    print cache
     f = get_fitness('FV')
-    print f.get_fitness(['0-0-2-2-2-0-2-0','0-0-2-1-0-0-2-0','1-0-1-2-2-1-0-0'])
+    #print f._set_finished_in(0)
+    print time()
+    print f._get_finished()

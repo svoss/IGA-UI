@@ -8,7 +8,8 @@ from files import load_pickle, save_pickle
 import numpy as np
 from deap import creator, base, tools, algorithms
 import random
-
+from csv import writer
+from files import _get_s3_file, _save_s3_file
 instances = {}
 
 
@@ -64,12 +65,15 @@ class IGA(object):
         if pop is None:
             self._make_initial_population()
         else:
+            self.fitness._set_finished_in()
             if self.fitness.has_fitness():
+                print "iterating"
                 self._iterate_population()
 
     def _iterate_population(self, k=3):
         fitness_object = get_fitness(self.project)
         population_str = self._get_current_population()
+        print "current population", population_str
         population = [intstring_to_string(individual) for individual in population_str]
         fitness = fitness_object.get_fitness(population_str)
         # Sometimes fitness can be false if experiment was not complete
@@ -77,6 +81,7 @@ class IGA(object):
             ranges = get_int_ranges(self.project)
             population = self._ga_selection(population, fitness, ranges, k=k)
             population = ['-'.join([str(i) for i in list(individual)]) for individual in population]
+            print population
             self._new_population(population)
 
     def _ga_selection(self, population, fitness, ranges, k=3):
@@ -131,14 +136,22 @@ class IGA(object):
     def _new_population(self, population):
         self.current_population = population
         self.fitness.wants_fitness(population)
+        self._log_population(population)
         save_pickle(self.project, 'current_population.pkl', self.current_population)
 
+    def _log_population(self, population):
+        f = _get_s3_file(self.project, 'pop-log.csv')
+        # append and optionally create new of if not exists
+        with open(f, 'a+') as io:
+            w = writer(io)
+            w.writerow(population)
+        _save_s3_file(self.project, 'pop-log.csv')
 
 # tests
 if __name__ == "__main__":
     if len(sys.argv) < 1:
         raise Exception("Expecting project argument")
     else:
-
         iga = get_IGA(sys.argv[1])
         iga.run()
+
