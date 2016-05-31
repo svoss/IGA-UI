@@ -159,3 +159,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    s3_save_log
