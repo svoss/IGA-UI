@@ -75,7 +75,6 @@ class DB(object):
 
     def try_to_find_fitness_for(self,pop):
         c = self.db.cursor()
-        print pop
         c.execute("SELECT f.code, f.fitness FROM fitness f WHERE f.code IN %s AND f.fitness IS NOT NULL",(pop,))
         return {x[0]:x[1] for x in c.fetchall()}
 

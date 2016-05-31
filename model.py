@@ -135,7 +135,11 @@ settings = {
         'ga_profile': '5259836',
         'prefix': 'http://cdn-iga.stijnvoss.com/tuxx/',
         'example_url': 'http://www.tuxx.nl/kalenders/a4formaat/2016/',
-        'search_algorithm': 'IGA'
+        'search_algorithm': 'IGA',
+        'db_host': 'iga.ck8u4fzj4qvv.us-east-1.rds.amazonaws.com',
+        'db_db':'iga_tuxx',
+        'db_user':'iga_admin',
+        'db_password':'Dk0BOZCQ1gVPsyQ4'
     }
 }
 
