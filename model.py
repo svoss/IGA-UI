@@ -126,7 +126,7 @@ settings = {
     'tuxx': {
         'start_code': "0-0-0-0-0",
         'time_zone': pytz.timezone('Europe/Amsterdam'),
-        's3_bucket': 'iga-tuxx-kevin91nl',
+        's3_bucket': 'iga-tuxx-stijnvoss',
         's3_region': 'us-east-1',
         'evaluation_time_per_individual': .4,  # time need per individual to determine fitness in days
         'population_size': 5,
