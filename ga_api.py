@@ -193,7 +193,7 @@ def _get_experiment_data(project, experiment_id, metrics='ga:pageviews, ga:exitR
     # stop & log
     vars, start, stop = stop_experiment(project, experiment_id)
     totals = s['totalsForAllResults']
-    _log_experiment_results(project, experiment_id, start.isoformat(), stop.isoformat(), totals['ga:pageviews'], totals['ga:exitRate'], vars, s['data'])
+    #_log_experiment_results(project, experiment_id, start.isoformat(), stop.isoformat(), totals['ga:pageviews'], totals['ga:exitRate'], vars, s['data'])
     return s
 
 
@@ -257,8 +257,8 @@ def _get_service(project):
 
 if __name__ == '__main__':
     pass
-    _save_s3_file('FV','ga-log.csv')
-    _save_s3_file('FV', 'pop-log.csv')
+    #_save_s3_file('FV','ga-log.csv')
+    #_save_s3_file('FV', 'pop-log.csv')
     #_get_s3_file('FV')
-    print [(x['name'],x['id']) for x in list_experiments('FV')]
+    print "\n".join([str(x['name']) +":"+ str(x['id']) for x in list_experiments('FV')])
     #x = _get_experiment_data('FV','r9vplR-kQ8aZ1TsK8ZmbbQ' )

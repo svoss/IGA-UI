@@ -2,6 +2,7 @@ from time import time
 from model import models, project_setting
 from files import load_pickle,save_pickle,log_ga
 from ga_api import start_experiments,get_experiment_score
+from db import get_db
 instances = {}
 from pprint import PrettyPrinter
 
@@ -25,6 +26,7 @@ class Fitness(object):
         :param string project:
         """
         self.project = project
+        self.db = get_db(project)
 
 
     def wants_fitness(self, population=[]):
@@ -36,7 +38,7 @@ class Fitness(object):
         if not self.has_fitness():
             raise Exception('Still running an experiment, can\'t setup a new one')
 
-        hits = self._try_get_from_cache(population)
+        hits = self.db.try_to_find_fitness_for(population)
 
         # Calculate part of population that is not yet cached and should therefore be put in ga
         variations = [p for p in population if p not in hits]
@@ -53,12 +55,15 @@ class Fitness(object):
             raise Exception("Fatal get_fitness called while population not valid")
         else:
             default_population = project_setting(self.project, 'start_code')
-            hits = self._try_get_from_cache(population)
+            print population
+            hits = self.db.try_to_find_fitness_for(population)
+            print hits
             # Calculate part of population that is not yet cached and should therefore come from ga
-            variations = [p for p in population ]#if p not in hits.keys()]
+            variations = [p for p in population if p not in hits.keys()]
 
             # when we need data from google analytics
             if len(variations) > 0:
+                log = {}
                 ex = self.get_current_experiment()
 
                 # retrieve fitness we need from analytics
@@ -67,37 +72,48 @@ class Fitness(object):
                 base = 0.0
                 for i in range(score.shape[1]):
                     if experiment_vars[i] == default_population:
-                        base = score[0,i]
+                        base = score[1,i]
                 for i in range(score.shape[1]):
                     v = experiment_vars[i]
                     if v in variations:
                         variations.remove(v)
-                        hits[v] = self._calc_fitness(score[0,i], base)
-                print variations
-                if len(variations) > 0:
-                    log_ga(self.project, "Could not find all fitnesses, re-planning for a day")
-                    self._set_finished_in(86400)
-                else:
-                    # log all results
-                    log_ga(self.project, score)
-                    self._save_cache(hits)
 
-                    #make sure to return in correct order
-                    return [hits[p] for p in population]
+                        hits[v] = self._calc_fitness(score[1,i], base)
+                        log[v] = (hits[v], score[1,i], int(score[0,i]))
+
+                # log all results
+                self.save_ga(ex['id'], log,base)
+
+            # make sure to return in correct order
+            return [hits[p] for p in population]
         return False
 
+    def save_ga(self,ex_id, log, base):
+        self.db.ga_experiment_pop_updated(ex_id,log)
+        self.db.ga_experiment_finished(ex_id,base,sum([p[2]for p in log.values()]))
+
     def has_fitness(self):
-        if self._get_finished() < time():
-            return self._get_finished(True) < time()
+        ex = self.get_current_experiment()
+        return ex is None or ex['ready_on'] < time()
 
 
     def get_current_experiment(self):
-        return load_pickle(self.project, 'current_ga_experiment.pkl')
+        ex = self.db.get_ga_open()
+        if ex is None:
+            return None
+        pop = self.db.get_ga_population(ex[0])
+        return {
+            'id':ex[0],
+            'experiment_id': ex[2],
+            'variations': pop,
+            'ready_on': ex[3]
+
+        }
 
     def _new_experiment(self, variations=[]):
         # everything is cached, we don't want to send something to analytics now..
         if variations is []:
-            self._set_finished_in(0)
+            pass
         else:
             # default variation is always present and the first
             default_population = project_setting(self.project, 'start_code')
@@ -110,29 +126,12 @@ class Fitness(object):
             ex_id = start_experiments(self.project, variations)
             self._save_current_experiment({"experiment_id":ex_id, "variations":variations})
 
-            # experiment finish time will dependent on the number of variations available
-            # 'evaluation_time_per_individual' setting gives the days it takes to evaluate one ind. in a population
-            time_per = project_setting(self.project, 'evaluation_time_per_individual')
-            self._set_finished_in(time_per * len(variations) * 86400)
-
     def _save_current_experiment(self, ex):
-        save_pickle(self.project, 'current_ga_experiment.pkl',ex)
+        pop = ex['variations']
+        time_per = project_setting(self.project, 'evaluation_time_per_individual')
+        id = self.db.save_ga_experiment(ex['experiment_id'], time_per * len(pop) * 86400)
+        self.db.save_ga_population(id, pop)
 
-    def _set_finished_in(self,in_secs=0):
-        save_pickle(self.project,'finished.pkl',time()+in_secs)
-
-    def _get_finished(self, forceS3 = False):
-        return load_pickle(self.project, 'finished.pkl',0, forceS3)
-
-    def _save_cache(self, fitnesses):
-        save_pickle(self.project,'fitness_cache.pkl',fitnesses )
-
-
-    def _try_get_from_cache(self, population=[]):
-        cache = load_pickle(self.project, 'fitness_cache.pkl')
-        if cache is not None:
-            return dict([(k,v) for k,v in cache.iteritems() if k in population])
-        return {}
 
     def _calc_fitness(self, exitRate, baseline):
         return (exitRate - baseline)/baseline
@@ -141,9 +140,4 @@ class Fitness(object):
 
 # tests
 if __name__ == "__main__":
-    cache = load_pickle('FV', 'fitness_cache.pkl')
-    print cache
     f = get_fitness('FV')
-    #print f._set_finished_in(0)
-    print time()
-    print f._get_finished()
