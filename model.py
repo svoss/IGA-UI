@@ -132,7 +132,7 @@ settings = {
         'population_size': 5,
         'ga_account': '1509805',
         'ga_property': 'UA-1509805-2',
-        'ga_profile': '5259836',
+        'ga_profile': '123018035',
         'prefix': 'http://cdn-iga.stijnvoss.com/tuxx/',
         'example_url': 'http://www.tuxx.nl/kalenders/a4formaat/2016/',
         'search_algorithm': 'IGA',
