@@ -120,7 +120,7 @@ class IGA(object):
         pop = [start_code]
 
         # rest are randomly generated samples
-        for i in xrange(0, pop_size - 1):
+        for i in xrange(0, pop_size):
             ind = []
             for v in vars:
                 ind.append(str(np.random.choice(vars[v], 1)[0]))
