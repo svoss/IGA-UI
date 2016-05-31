@@ -111,7 +111,7 @@ settings = {
         's3_bucket': 'iga-fv-stijnvoss',
         's3_region': 'us-east-1',
         'evaluation_time_per_individual': .4,  # time need per individual to determine fitness in days
-        'population_size': 5,
+        'population_size': 7,
         'ga_account': '5318270',
         'ga_property': 'UA-5318270-1',
         'ga_profile': '120892623',
