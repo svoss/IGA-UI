@@ -112,7 +112,6 @@ def log_analytics(project):
     # Return empty view
     return ""
 
-
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
 
