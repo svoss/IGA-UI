@@ -6,3 +6,9 @@ cron:
  - name: "fv-analytics"          # required - unique across all entries in this file
    url: "/FV/analytics"              # required - does not need to be unique
    schedule: "* * * * *"
+ - name: "tuxx-work"          # required - unique across all entries in this file
+   url: "/tuxx/work"              # required - does not need to be unique
+   schedule: "* */1 * * *"
+ - name: "tuxx-analytics"          # required - unique across all entries in this file
+   url: "/tuxx/analytics"              # required - does not need to be unique
+   schedule: "* * * * *"
