@@ -3,11 +3,12 @@ import pytz
 tuxx = {
     'monthnames': {
         'normal': '',
-        'blue': '$(".month-heading").css("color", "#22628b");'
+        'blue': '$(".month-heading").css("color", "#067DB5").css("cursor", "pointer").on("click", function() {window.location = "http://www.tuxx.nl/planning/maandplanners/blokken/";});'
     },
     'holiday': {
         'normal': '',
-        'underlined': '$(".square").css("border", "1px solid white"); $(".square").css("border-bottom", "1px solid #22628b").css("color", "#22628b");',
+        'lined': '$(".square").css("border", "1px solid #067DB5").css("background-color", "#FFFFFF").css("color", "#067DB5").css("padding", "1px").css("cursor", "pointer").on("click", function() {window.location = "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/";});$(".feestdagen-cntr-nw table td:nth-child(2)").wrapInner($("<a />").attr("href", "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/"));',
+        'colored': '$(".square").css("border", "1px solid #067DB5").css("background-color", "#067DB5").css("color", "#FFFFFF").css("padding", "1px").css("cursor", "pointer").on("click", function() {window.location = "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/";});$(".feestdagen-cntr-nw table td:nth-child(2)").wrapInner($("<a />").attr("href", "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/"));',
     },
     'billboard': {
         'normal': '',
@@ -15,11 +16,12 @@ tuxx = {
     },
     'weekenddays': {
         'normal': '',
-        'grey': '$(".mnth-cntr .dys-rw:nth-child(8) .wdth-vdr").css("color", "grey"); $(".mnth-cntr .dys-rw:nth-child(9) .wdth-vdr").css("color", "grey");'
+        'grey': '$(".mnth-cntr .dys-rw:nth-child(8)").css("color", "grey"); $(".mnth-cntr .dys-rw:nth-child(9)").css("color", "grey");'
     },
     'weeknumbers': {
         'normal': '',
-        'underlined': '$(".fnt-itlc-bld").css("text-decoration", "underline"); $(".fnt-itlc-bld:nth-child(1)").css("text-decoration", "none");'
+        'removed': '$("#tuxxContent .brdr-cls").css("border-top", "0px").css("border-bottom", "0px")',
+        'grey': '$("#tuxxContent .brdr-cls").css("border-top", "1px solid #AAAAAA").css("border-bottom", "1px solid #AAAAAA")',
     }
 }
 
@@ -116,12 +118,12 @@ settings = {
         'ga_property': 'UA-5318270-1',
         'ga_profile': '120892623',
         'prefix': 'http://cdn-iga.stijnvoss.com/FV/',
-        'example_url':'http://www.filmvandaag.nl/film/1633-the-hitchhikers-guide-to-the-galaxy',
+        'example_url': 'http://www.filmvandaag.nl/film/1633-the-hitchhikers-guide-to-the-galaxy',
         'search_algorithm': 'IGA',
         'db_host': 'iga.ck8u4fzj4qvv.us-east-1.rds.amazonaws.com',
-        'db_db':'iga_fv',
-        'db_user':'iga_admin',
-        'db_password':'Dk0BOZCQ1gVPsyQ4'
+        'db_db': 'iga_fv',
+        'db_user': 'iga_admin',
+        'db_password': 'Dk0BOZCQ1gVPsyQ4'
     },
     'tuxx': {
         'start_code': "0-0-0-0-0",
@@ -137,9 +139,9 @@ settings = {
         'example_url': 'http://www.tuxx.nl/kalenders/a4formaat/2016/',
         'search_algorithm': 'IGA',
         'db_host': 'iga.ck8u4fzj4qvv.us-east-1.rds.amazonaws.com',
-        'db_db':'iga_tuxx',
-        'db_user':'iga_admin',
-        'db_password':'Dk0BOZCQ1gVPsyQ4'
+        'db_db': 'iga_tuxx',
+        'db_user': 'iga_admin',
+        'db_password': 'Dk0BOZCQ1gVPsyQ4'
     }
 }
 
