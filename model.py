@@ -2,26 +2,26 @@ import pytz
 
 tuxx = {
     'monthnames': {
-        'normal': '',
-        'blue': '$(".month-heading").css("color", "#067DB5").css("cursor", "pointer").on("click", function() {window.location = "http://www.tuxx.nl/planning/maandplanners/blokken/";});'
+        '0-normal': '',
+        '1-blue': '$(".month-heading").css("color", "#067DB5").css("cursor", "pointer").on("click", function() {window.location = "http://www.tuxx.nl/planning/maandplanners/blokken/";});'
     },
     'holiday': {
-        'normal': '',
-        'lined': '$(".square").css("border", "1px solid #067DB5").css("background-color", "#FFFFFF").css("color", "#067DB5").css("padding", "1px").css("cursor", "pointer").on("click", function() {window.location = "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/";});$(".feestdagen-cntr-nw table td:nth-child(2)").wrapInner($("<a />").attr("href", "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/"));',
-        'colored': '$(".square").css("border", "1px solid #067DB5").css("background-color", "#067DB5").css("color", "#FFFFFF").css("padding", "1px").css("cursor", "pointer").on("click", function() {window.location = "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/";});$(".feestdagen-cntr-nw table td:nth-child(2)").wrapInner($("<a />").attr("href", "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/"));',
+        '0-normal': '',
+        '1-lined': '$(".square").css("border", "1px solid #067DB5").css("background-color", "#FFFFFF").css("color", "#067DB5").css("padding", "1px").css("cursor", "pointer").on("click", function() {window.location = "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/";});$(".feestdagen-cntr-nw table td:nth-child(2)").wrapInner($("<a />").attr("href", "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/"));',
+        '2-colored': '$(".square").css("border", "1px solid #067DB5").css("background-color", "#067DB5").css("color", "#FFFFFF").css("padding", "1px").css("cursor", "pointer").on("click", function() {window.location = "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/";});$(".feestdagen-cntr-nw table td:nth-child(2)").wrapInner($("<a />").attr("href", "http://www.tuxx.nl/feestdagen_en_gedenkdagen/2016/"));',
     },
     'billboard': {
-        'normal': '',
-        'disabled': '$(".billboard").remove();'
+        '0-normal': '',
+        '1-disabled': '$(".billboard").remove();'
     },
     'weekenddays': {
-        'normal': '',
-        'grey': '$(".mnth-cntr .dys-rw:nth-child(8)").css("color", "grey"); $(".mnth-cntr .dys-rw:nth-child(9)").css("color", "grey");'
+        '0-normal': '',
+        '1-grey': '$(".mnth-cntr .dys-rw:nth-child(8)").css("color", "grey"); $(".mnth-cntr .dys-rw:nth-child(9)").css("color", "grey");'
     },
     'weeknumbers': {
-        'normal': '',
-        'removed': '$("#tuxxContent .brdr-cls").css("border-top", "0px").css("border-bottom", "0px")',
-        'grey': '$("#tuxxContent .brdr-cls").css("border-top", "1px solid #AAAAAA").css("border-bottom", "1px solid #AAAAAA")',
+        '0-normal': '',
+        '1-removed': '$("#tuxxContent .brdr-cls").css("border-top", "0px").css("border-bottom", "0px")',
+        '2-grey': '$("#tuxxContent .brdr-cls").css("border-top", "1px solid #AAAAAA").css("border-bottom", "1px solid #AAAAAA")',
     }
 }
 
