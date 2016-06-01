@@ -129,7 +129,7 @@ class Fitness(object):
     def _save_current_experiment(self, ex):
         pop = ex['variations']
         time_per = project_setting(self.project, 'evaluation_time_per_individual')
-        id = self.db.save_ga_experiment(ex['experiment_id'], time_per * len(pop) * 86400)
+        id = self.db.save_ga_experiment(ex['experiment_id'],86300)
         self.db.save_ga_population(id, pop)
 
 
