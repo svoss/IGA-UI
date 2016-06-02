@@ -98,7 +98,7 @@ def stop_experiment(project, experiment_id):
     """
     service = _get_service(project)
     #get current state, change name to current name appended with end date
-    current = get_experiment('FV', experiment_id)
+    current = get_experiment(project, experiment_id)
     if current['status'] != 'ENDED':
         #get start time from name
         start = datetime.strptime(current['name'], 'IGA - %Y-%m-%d %H:%M:%S')
