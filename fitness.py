@@ -55,9 +55,7 @@ class Fitness(object):
             raise Exception("Fatal get_fitness called while population not valid")
         else:
             default_population = project_setting(self.project, 'start_code')
-            print population
             hits = self.db.try_to_find_fitness_for(population)
-            print hits
             # Calculate part of population that is not yet cached and should therefore come from ga
             variations = [p for p in population if p not in hits.keys()]
 
