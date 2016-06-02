@@ -132,7 +132,7 @@ class Fitness(object):
 
 
     def _calc_fitness(self, exitRate, baseline):
-        return (exitRate - baseline)/baseline
+        return (baseline - exitRate)/baseline
 
 
 
