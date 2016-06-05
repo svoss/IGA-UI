@@ -67,23 +67,28 @@ class Fitness(object):
                 # retrieve fitness we need from analytics
                 score = get_experiment_score(self.project, ex['experiment_id'])
                 experiment_vars = ex['variations']
-                base = 0.0
-                for i in range(score.shape[1]):
-                    if experiment_vars[i] == default_population:
-                        base = score[1,i]
-                for i in range(score.shape[1]):
-                    v = experiment_vars[i]
-                    if v in variations:
-                        variations.remove(v)
+                if score.shape[1] < 1:
+                    self.db.delay_exp(ex['id'], 3600)
+                else:
+                    base = 0.0
+                    for i in range(score.shape[1]):
+                        if experiment_vars[i] == default_population:
+                            base = score[1,i]
+                    for i in range(score.shape[1]):
+                        v = experiment_vars[i]
+                        if v in variations:
+                            variations.remove(v)
 
-                        hits[v] = self._calc_fitness(score[1,i], base)
-                        log[v] = (hits[v], score[1,i], int(score[0,i]))
+                            hits[v] = self._calc_fitness(score[1,i], base)
+                            log[v] = (hits[v], score[1,i], int(score[0,i]))
 
-                # log all results
-                self.save_ga(ex['id'], log,base)
+                    # log all results
+                    self.save_ga(ex['id'], log, base)
 
-            # make sure to return in correct order
-            return [hits[p] for p in population]
+                    # make sure to return in correct order
+                    return [hits[p] for p in population]
+            else:
+                return [hits[p] for p in population]
         return False
 
     def save_ga(self,ex_id, log, base):
@@ -139,3 +144,4 @@ class Fitness(object):
 # tests
 if __name__ == "__main__":
     f = get_fitness('FV')
+    f.get_fitness(['0-0-2-2-2-0-2-0','1-0-0-1-0-0-2-1','0-1-0-3-0-0-1-0'])

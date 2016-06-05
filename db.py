@@ -72,6 +72,10 @@ class DB(object):
         c.execute("SELECT m.code FROM population_member m WHERE m.population_id IN (SELECT max(id) FROM population)")
         return [p[0] for p in c.fetchall()]
 
+    def delay_exp(self, id, delay):
+        c = self.db.cursor()
+        c.execute("UPDATE ga_experiment SET ready_on = ready_on + %s WHERE id=%s",(str(int(delay)), id))
+        self.db.commit()
 
     def try_to_find_fitness_for(self,pop):
         c = self.db.cursor()
